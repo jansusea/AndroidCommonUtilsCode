@@ -120,4 +120,52 @@ public class CommonUtils {
         Matcher m = p.matcher(number);
         return m.matches();
     }
+
+	private static String formatTime(String time) {
+		String formatTime = null;
+		if (time == null || time.equals("")) {
+			return formatTime;
+		}
+		long originTime = Long.valueOf(time);
+
+		long now = System.currentTimeMillis();
+		Calendar nowCalendar = Calendar.getInstance();
+		nowCalendar.setTimeInMillis(now);
+
+		int year = nowCalendar.get(Calendar.YEAR);
+		int month = nowCalendar.get(Calendar.MONTH);
+		int day = nowCalendar.get(Calendar.DAY_OF_MONTH);
+		nowCalendar.set(year, month, day, 0, 0, 0);
+		long today = nowCalendar.getTime().getTime();
+		
+		if(originTime > today){
+			// get hh:mm
+			SimpleDateFormat s = new SimpleDateFormat("hh:mm");
+			formatTime = s.format(new Date(originTime));
+			return formatTime;
+		}
+		
+		nowCalendar.set(year, month, day - 1, 0, 0, 0);
+		long yesterday = nowCalendar.getTime().getTime();
+		if(originTime > yesterday){
+			// yesterday
+			formatTime = "昨天";
+			return formatTime;
+		}
+
+		nowCalendar.set(year, 0, 1, 0, 0, 0);
+		long thisYear = nowCalendar.getTime().getTime();
+		if(originTime > thisYear){
+			// this year,   mm:dd
+			SimpleDateFormat s = new SimpleDateFormat("MM月dd日");
+			formatTime = s.format(new Date(originTime));
+			return formatTime;
+		}
+		
+		// year年mm月dd日
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
+		formatTime = sdf.format(new Date(originTime));
+		return formatTime;
+
+	}
 }
