@@ -105,6 +105,24 @@ public class CommonUtils {
         return stringRandom;
     }
 
+	public static String formatTime2HMS(long time) {
+		String a = null;
+
+		Date date = new Date(time);
+
+		if (time < 60) {
+			a = time + "秒";
+		} else if (time < 3600) {
+			a = (time / 60) + "分" + (time % 60) + "秒";
+		} else{
+			long h = time / 3600;
+			long m = (time - time / 3600 * 3600) / 60;
+			long s = time - h * 3600 - m * 60;
+			a = h + "时" + m + "分" + s + "秒";
+		}
+		return a;
+	}
+
     /**
      * 匹配手机
      *
